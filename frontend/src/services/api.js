@@ -3,7 +3,7 @@
  * Handles authorization tokens, error normalization, and multipart file uploads.
  */
 
-const BASE_URL = '/api';
+const BASE_URL = 'https://ideologist.onrender.com/api';
 
 function getToken() {
   return localStorage.getItem('ideologist_token');
