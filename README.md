@@ -152,4 +152,4 @@ Comprehensive documentation is provided in the `/docs` directory:
 ---
 
 ## ⚠️ Academic Demonstration Notice
-*Ideologist is developed for software engineering academic mini-project demonstration. All financial projections, viability scores, and investor interaction requests are simulated demonstration features designed for educational evaluation and examination defense.*
+*Ideologist is developed for academic project demonstration. All financial projections, viability scores, and investor interaction requests are simulated demonstration features designed for educational evaluation and examination defense.*
