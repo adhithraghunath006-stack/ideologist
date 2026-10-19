@@ -1,0 +1,435 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================
+   IDEOLOGIST — POWERED BY RMR
+   Refined design system
+   ========================================= */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-navy-950 text-slate-200 font-sans min-h-screen flex flex-col;
+
+    margin: 0;
+    min-width: 320px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern";
+  }
+
+  ::selection {
+    background: rgba(16, 185, 129, 0.3);
+    color: #ffffff;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #34d399;
+    outline-offset: 4px;
+  }
+
+  img,
+  svg,
+  video {
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+}
+
+/* =========================================
+   SURFACES
+   ========================================= */
+
+.panel {
+  background: #0d1322;
+  border: 1px solid #1f2c44;
+}
+
+.panel-card {
+  background: #101726;
+  border: 1px solid #1e2b43;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.panel-card:hover {
+  background: #141c2e;
+  border-color: #344666;
+}
+
+/* Avoid unnecessary movement on touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .panel-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================
+   NAVIGATION & SCROLL TARGETS
+   ========================================= */
+
+[id] {
+  scroll-margin-top: 88px;
+}
+
+/* Apply this class to the main page content if needed */
+.page-content {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================================
+   PURPOSEFUL MOTION
+   ========================================= */
+
+/* Subtle entrance animation for elements explicitly
+   assigned this class by the React components. */
+
+@keyframes ideologist-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-ideologist-enter {
+  animation: ideologist-enter 550ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+
+/* Gentle movement for the custom brand mark */
+
+@keyframes ideologist-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-ideologist-orbit {
+  transform-origin: center;
+  animation: ideologist-orbit 24s linear infinite;
+}
+
+/* Smooth interaction for buttons and links */
+
+button,
+a {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+/* Do not animate every element on the page.
+   Keep motion attached to purposeful components. */
+
+/* =========================================
+   TYPOGRAPHY & LAYOUT SAFETY
+   ========================================= */
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+main,
+section,
+article,
+aside {
+  min-width: 0;
+}
+
+/* Prevent long content from breaking dashboard layouts */
+
+.break-long-content {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #233250 #070a12;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070a12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #233250;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #344766;
+}
+
+/* =========================================
+   RESPONSIVE DETAILS
+   ========================================= */
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  [id] {
+    scroll-margin-top: 72px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================
+   PRINT / FEASIBILITY REPORTS
+   ========================================= */
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    min-height: auto;
+    display: block;
+  }
+
+  .no-print,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  .panel,
+  .panel-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #dddddd !important;
+    box-shadow: none !important;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: none !important;
+  }
+
+  section,
+  article,
+  table {
+    break-inside: avoid;
+  }
+}
+
+/* ==========================================
+   IDEOLOGIST — ORBIT CURSOR
+   ========================================== */
+
+.orbit-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  display: none;
+  will-change: transform, opacity;
+}
+
+.orbit-cursor__ring {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(52, 211, 153, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.08);
+  animation: orbit-cursor-spin 7s linear infinite;
+  transition:
+    inset 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.orbit-cursor__satellite {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 7px rgba(251, 191, 36, 0.35);
+  transform: translate(-50%, -50%);
+}
+
+.orbit-cursor__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 9px rgba(52, 211, 153, 0.5);
+  transform: translate(-50%, -50%);
+}
+
+.orbit-cursor__ripple {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #34d399;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.orbit-cursor.is-hovering .orbit-cursor__ring {
+  inset: -4px;
+  border-color: #fbbf24;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.orbit-cursor.is-hovering .orbit-cursor__core {
+  background: #fbbf24;
+}
+
+.orbit-cursor.is-clicking .orbit-cursor__ripple {
+  animation: orbit-cursor-ripple 400ms ease-out;
+}
+
+@keyframes orbit-cursor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-cursor-ripple {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.6);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* Hide the normal arrow only when the custom cursor is active. */
+
+@media (hover: hover) and (pointer: fine) {
+  body.orbit-cursor-enabled,
+  body.orbit-cursor-enabled a,
+  body.orbit-cursor-enabled button,
+  body.orbit-cursor-enabled [role="button"] {
+    cursor: none;
+  }
+
+  body.orbit-cursor-enabled input,
+  body.orbit-cursor-enabled textarea,
+  body.orbit-cursor-enabled select,
+  body.orbit-cursor-enabled [contenteditable="true"] {
+    cursor: auto;
+  }
+
+  body.orbit-cursor-enabled input[type="text"],
+  body.orbit-cursor-enabled input[type="email"],
+  body.orbit-cursor-enabled input[type="password"],
+  body.orbit-cursor-enabled textarea {
+    cursor: text;
+  }
+}
+
+/* Keep touch devices and reduced-motion users comfortable. */
+
+.orbit-cursor.reduced-motion .orbit-cursor__ring {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-cursor__ring,
+  .orbit-cursor__ripple {
+    animation: none !important;
+  }
+
+  .orbit-cursor.is-hovering .orbit-cursor__ring {
+    transition: none;
+  }
+}
