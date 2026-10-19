@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -13,6 +14,9 @@ const pitchEventRoutes = require('./routes/pitchEventRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const locationRoutes = require('./routes/locationRoutes');
 
+// TEMPORARY: Admin account recovery route
+const recoveryRoutes = require('./routes/recoveryRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -23,7 +27,7 @@ initDatabase();
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-recovery-key']
 }));
 
 app.use(express.json());
@@ -50,17 +54,23 @@ app.use('/api/pitch-events', pitchEventRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/locations', locationRoutes);
 
+// TEMPORARY: Remove this route after successful recovery
+app.use('/api/recovery', recoveryRoutes);
+
 // 404 handler
 app.use('/api/*', (req, res) => {
-  res.status(404).json({ success: false, message: `Endpoint ${req.originalUrl} not found.` });
+  res.status(404).json({
+    success: false,
+    message: `Endpoint ${req.originalUrl} not found.`
+  });
 });
 
 // Centralized error handler
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🚀 Ideologist Backend running on http://localhost:${PORT}`);
-  console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
-  console.log(`====================================================`);
+  console.log('====================================================');
+  console.log(`🚀 Ideologist Backend running on port ${PORT}`);
+  console.log(`📊 Health Check: /api/health`);
+  console.log('====================================================');
 });
