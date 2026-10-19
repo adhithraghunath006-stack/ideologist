@@ -11,20 +11,26 @@ router.post('/admin', async (req, res) => {
   const expectedKey = process.env.ADMIN_RECOVERY_KEY || '';
   const newPassword = process.env.ADMIN_RECOVERY_PASSWORD || '';
 
+  // Validate the recovery key safely, even if lengths differ.
+  const suppliedBuffer = Buffer.from(suppliedKey);
+  const expectedBuffer = Buffer.from(expectedKey);
+
   if (
     !expectedKey ||
     !suppliedKey ||
-    !crypto.timingSafeEqual(
-      Buffer.from(suppliedKey),
-      Buffer.from(expectedKey)
-    )
+    suppliedBuffer.length !== expectedBuffer.length ||
+    !crypto.timingSafeEqual(suppliedBuffer, expectedBuffer)
   ) {
-    return res.status(401).json({ message: 'Unauthorized.' });
+    return res.status(401).json({
+      success: false,
+      message: 'Recovery key is missing or incorrect.'
+    });
   }
 
   if (newPassword.length < 12) {
-    return res.status(500).json({
-      message: 'Set ADMIN_RECOVERY_PASSWORD to at least 12 characters.'
+    return res.status(400).json({
+      success: false,
+      message: 'Set ADMIN_RECOVERY_PASSWORD to at least 12 characters in Render.'
     });
   }
 
@@ -37,24 +43,35 @@ router.post('/admin', async (req, res) => {
 
     if (!admin) {
       return res.status(404).json({
+        success: false,
         message: 'Admin account not found in the live database.'
       });
     }
 
     const hash = await bcrypt.hash(newPassword, 12);
 
-    db.prepare(
+    const result = db.prepare(
       `UPDATE users SET password_hash = ?
        WHERE id = ? AND role = 'admin'`
     ).run(hash, admin.id);
 
+    if (Number(result.changes) !== 1) {
+      return res.status(500).json({
+        success: false,
+        message: 'Admin password was not updated.'
+      });
+    }
+
     return res.json({
       success: true,
-      message: 'Admin password updated. Other records were not modified.'
+      message: 'Admin password updated successfully.'
     });
   } catch (error) {
-    console.error('[Recovery] Admin password update failed:', error.message);
-    return res.status(500).json({ message: 'Recovery failed.' });
+    console.error('[Recovery] Admin password update failed:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Recovery failed. Check Render logs.'
+    });
   }
 });
 
